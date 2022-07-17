@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import "./Cart.css";
 
@@ -106,7 +106,7 @@ function Cart({
             </>
           ) : (
             <div className="noproduct">
-              No items are added, please visit products page to add items...
+              No items on cart, please visit products page to add items...
             </div>
           )}
         </div>

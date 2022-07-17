@@ -1,7 +1,7 @@
-import Navbar from "./Navbar";
+
 import Home from "./Home";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Cart from "./Cart";
 function App() {
   const [cartItems, setCartitems] = useState([]);
@@ -10,14 +10,14 @@ function App() {
     const productExist = cartItems.find((item) => item.id === product.id);
 if(product.quantity!==0){
     if (productExist) {
-      alert("Product is alredy in the cart, please check the shopping cart!");
+      alert("Product is alredy in the cart!");
     } else {
       setCartitems([...cartItems, { ...product, productinCart: 1 }]);
       console.log(cartItems);
     }
   }
   else{
-    alert("Sorry for the inconvience, product is out of stock!");
+    alert("Product is out of stock please try after some time!");
 
   }
 
@@ -36,9 +36,9 @@ if(product.quantity!==0){
             : item
         )
       );
-      // alert(`${productExist.productinCart} items in the cart!`)
+     
     } else {
-      alert("Sorry for the inconvience, product is out of stock!");
+      alert("Product is out of stock please try after some time!");
     }
   };
 
@@ -46,7 +46,7 @@ if(product.quantity!==0){
     const productExist = cartItems.find((item) => item.id === product.id);
     if (productExist.productinCart === 1) {
       setCartitems(cartItems.filter((item) => item.id !== product.id));
-      // alert("Product removed from the shopping cart!");
+     
     } else {
       setCartitems(
         cartItems.map((item) =>
@@ -60,7 +60,7 @@ if(product.quantity!==0){
 
   const handleDelete = (product) => {
     setCartitems(cartItems.filter((item) => item.id !== product.id));
-    // alert("Product removed from the shopping cart!");
+    
   };
 
   const totalQuantity = (cartItems) => {
@@ -77,14 +77,20 @@ if(product.quantity!==0){
   
   return (
     <>
+
+        <Routes>
+
+        <Route path="/Cart" element={<Cart cartItems={cartItems}
+            handleAdd={handleAdd}
+            handleReduce={handleReduce}
+            handleDelete={handleDelete}
+            totalQuantity={totalQuantity} />} />
+
+        <Route path="/" element={<Home cartItems={cartItems}
+            handleAddtocart={handleAddtocart}
+            totalQuantity={totalQuantity} />} />
+        </Routes>
     
-      < Navbar cartItems={cartItems}
-            handleAddtocart={handleAddtocart}
-            totalQuantity={totalQuantity}/>
-      < Home cartItems={cartItems}
-            handleAddtocart={handleAddtocart}
-            totalQuantity={totalQuantity}/>
-      
     </>
   );
 }

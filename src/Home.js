@@ -1,30 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./Home.css"
+import Navbar from "./Navbar";
 const Home = ({ cartItems, totalQuantity, handleAddtocart }) => {
     
   const [productList, setProductlist] = useState([]);
   const [filterProducts, setFilterproducts] = useState([]);
   const [searchKeyword, setSearchkeyword] = useState("");
 
-
-  // const searchParameter = ["name", "color", "gender", "type"];
-
-  
-  // let [productList, setProductlist] = useState([]);
-    // //query search
-    // const [searchKeyword, setSearchkeyword] = useState("");
-    // const [filterProducts, setFilterproducts] = useState([]);
-    // const searchParameter = ["name", "color", "gender", "type"];
-
-    // useEffect(() => {
-    //   async function fetchAPI() {
-    //     await fetch(api)
-    //       .then((res) => res.json())
-    //       .then((res) => setProductlist(res))
-    //       .catch((err) => console.log(err));
-    //   }
-    //   fetchAPI();
-    // }, []);
 
     const callAPI = async function fetchAPI() {
       await fetch(api)
@@ -34,20 +16,18 @@ const Home = ({ cartItems, totalQuantity, handleAddtocart }) => {
     }
   
     useEffect(()=>{
-      callAPI()
+      callAPI(api)
     },[])
-    // console.log(productList);
-
+    
     useEffect(() => {
       setFilterproducts([...productList]);
-      // console.log(setFilterproducts)
+     
     }, [productList]);
 
-// console.log(productList);
     //handle search
     const handleSearch = () => {
       const search = searchKeyword.toLowerCase();
-      // console.log(search)
+      
       if(search !== ""){
         let filteredProducts = productList.filter((item)=>{
       return Object.values(item).join(" ").toLowerCase().includes(search)
@@ -62,10 +42,7 @@ const Home = ({ cartItems, totalQuantity, handleAddtocart }) => {
    
 
 
-    //handle check event
-    // const handleCheck = (value) =>{
-    //   console.log(value);
-    // }
+   
 
     const handleCheck = (e) =>{
       let event = e.target.value.toLowerCase();
@@ -80,7 +57,7 @@ const Home = ({ cartItems, totalQuantity, handleAddtocart }) => {
       setFilterproducts(filteredProducts);
     } else {
       setFilterproducts(productList);
-      // console.log(productList);
+      console.log(productList);
     }
     }
 
@@ -90,14 +67,14 @@ const Home = ({ cartItems, totalQuantity, handleAddtocart }) => {
     const colorList = [...new Set(productList.map((product) => product.color))];
   const genderList = [...new Set(productList.map((product) => product.gender))];
   const typeList = [...new Set(productList.map((product) => product.type))];
-  const pricelist = ["Rs.0-Rs.250", "Rs.251-Rs.Rs.450", "Rs.451-Rs.500"];
+  
 
 
   const filterAttributes = [
     { label: "color", value: colorList },
     { label: "gender", value: genderList },
     { label: "type", value: typeList },
-    { label: "price", value: pricelist }
+    
   ];
 
   console.log(filterAttributes[0].value[0]);
@@ -108,7 +85,7 @@ const Home = ({ cartItems, totalQuantity, handleAddtocart }) => {
     return (
     <div className="container">
 
-
+<Navbar cartItems={cartItems} totalQuantity={totalQuantity} productList={productList} handleSearch={handleSearch} />
     <div className="searchbar">
         <input
           className="input"
@@ -129,7 +106,7 @@ const Home = ({ cartItems, totalQuantity, handleAddtocart }) => {
             <h2>Filter</h2>
             <p>Filter Using Attributes</p>
 
-           {/* Adding filters  */}
+           {/*  filters Values */}
            <div className="filters">
       {filterAttributes.map((filterItems, index) => {
         return (
@@ -141,8 +118,9 @@ const Home = ({ cartItems, totalQuantity, handleAddtocart }) => {
                   <input
                     type="checkbox"
                     value={ele}
-                    // checked={checked.indexOf(ele) === -1 ? false : true}
                     onChange={(e) => handleCheck(e)}
+
+                    
                   />
                   {ele}
                 </label>
